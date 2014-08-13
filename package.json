@@ -1,0 +1,27 @@
+{
+  "name": "Phlogger",
+  "version": "0.0.0",
+  "description": "A simple photo-blogging platform",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/louisnk/phlogger"
+  },
+  "keywords": [
+    "Louis",
+    "Kinley",
+    "photo-blogging",
+    "phlog",
+    "phlogging"
+  ],
+  "author": "Louis Kinley",
+  "bugs": {
+    "url": "https://github.com/louisnk/phlogger/issues"
+  },
+  "homepage": "https://github.com/louisnk/phlogger",
+  "dependencies": {
+    "express": "3.5.0",
+    "hjs": "*",
+    "less-middleware": "*"
+  }
+}
