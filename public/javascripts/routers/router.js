@@ -33,6 +33,7 @@ var APP = window.APP || {};
 			render = function() {
 				APP.state.set('picRollOpen', true);
 			}.bind(this);
+			
 			render();
 			return this;
 		}
