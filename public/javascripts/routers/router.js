@@ -13,6 +13,7 @@ var APP = window.APP || {};
 		target: $('#mobile-under'),
 
 		home: function() {
+			console.log(APP);
 			render = function() {
 				this.target.html("I'm working to route things :)");
 			}.bind(this);
