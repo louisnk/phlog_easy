@@ -12,12 +12,17 @@ var APP = window.APP || {};
 
 		target: $('#mobile-under'),
 
+		initialize: function(config) {
+			this.model = config.model;
+
+		},
+
 		home: function() {
-			console.log(APP);
 			render = function() {
 				this.target.html("I'm working to route things :)");
 			}.bind(this);
 			render();
+
 			return this;
 		},
 
@@ -26,7 +31,7 @@ var APP = window.APP || {};
 				console.log('render images from: ' + which);
 			}
 			render = function() {
-				this.target.html("You want images?!");
+				APP.state.set('picRollOpen', true);
 			}.bind(this);
 			render();
 			return this;

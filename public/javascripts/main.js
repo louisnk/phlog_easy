@@ -9,7 +9,8 @@ var APP = window.APP || {};
       footerAvailable: false,
       footerTakeover: false,
       canvasHeader: Modernizr.canvas,
-      mainBg: 'url(/images/enchanted3.jpg)'
+      mainBg: 'url(/images/enchanted3.jpg)',
+      picRollOpen: false
     }),
 
     init: function() {
@@ -22,10 +23,11 @@ var APP = window.APP || {};
         nav: new Views.NavSidebar(viewConfig('#nav-container')),
         mainContent: new Views.MainContent(viewConfig('#main-content')),
         mainHeader: new Views.MainHeader(viewConfig('#mobile-header')),
-        mainFooter: new Views.MainFooter(viewConfig('#mobile-footer'))
+        mainFooter: new Views.MainFooter(viewConfig('#mobile-footer')),
+        picRoll: new Views.MainImageView(viewConfig('#mobile-under'))
       };
 
-      this.mainRouter = new APP.Routers.Main();
+      this.mainRouter = new APP.Routers.Main({model: this.state});
       Backbone.history.start({pushState: true});
       
       this.bindNavAction();
@@ -50,6 +52,12 @@ var APP = window.APP || {};
            trigger: true 
          });
       }.bind(this));
+    },
+
+    doRouting: function() {
+      this.mainRouter.on('route:home', function() {
+        this.model.get()
+      })
     }
 
     
