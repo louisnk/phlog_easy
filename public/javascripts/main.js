@@ -9,7 +9,7 @@ var APP = window.APP || {};
       footerAvailable: false,
       footerTakeover: false,
       canvasHeader: Modernizr.canvas,
-      mainBg: 'url(/images/enchanted3.jpg)',
+      mainBg: 'url(/images/asia.jpg)',
       picRollOpen: false
     }),
 
@@ -28,7 +28,7 @@ var APP = window.APP || {};
       };
 
       this.mainRouter = new APP.Routers.Main({model: this.state});
-      Backbone.history.start({pushState: true});
+      Backbone.history.start();
       
       this.bindNavAction();
       this.stopLocalLinks();
@@ -52,14 +52,7 @@ var APP = window.APP || {};
            trigger: true 
          });
       }.bind(this));
-    },
-
-    doRouting: function() {
-      this.mainRouter.on('route:home', function() {
-        this.model.get()
-      })
     }
-
     
 
   });

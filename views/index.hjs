@@ -61,7 +61,7 @@
             <div class="text">Light</div>
           </div>
         </a>
-        <a href="#Simages/abroad" alt="Photos from abroad">
+        <a href="#images/abroad" alt="Photos from abroad">
           <div class="nav-button">
             <div class="icon icon-earth"></div>
             <div class="text">The world</div>

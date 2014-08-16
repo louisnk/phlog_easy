@@ -22,6 +22,7 @@
   "dependencies": {
     "express": "3.5.0",
     "hjs": "*",
+    "hogan.js": "*",
     "less-middleware": "*"
   }
 }

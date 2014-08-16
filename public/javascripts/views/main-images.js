@@ -8,16 +8,20 @@ var APP = window.APP || {};
 			this.template = APP.templates.images;
 			
 			this.model.on('change:picRollOpen', function(model, inUse) {
-				if (inUse) { this.render(); }
+				if (inUse) { this.showPictures(); }
+				else {
+					this.hidePictures();
+				}
 			}.bind(this));
+
+
 
 			return this;
 		},
 
-		render: function() {
+		showPictures: function() {
 			var test = {
 				images: [
-					{src: 'https://avatars3.githubusercontent.com/u/6484924?v=2&s=460', description: 'me'},
 					{src: 'http://louisnk.com/v2/img/asia.jpg', description: 'me in asia'}
 				]
 			}
@@ -27,8 +31,8 @@ var APP = window.APP || {};
 			return this;
 		},
 
-		hidePicNRoll: function() {
-			console.log('I should go away now');
+		hidePictures: function() {
+			this.$el.empty();
 		}
 	})
 })();
