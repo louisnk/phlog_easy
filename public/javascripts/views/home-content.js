@@ -3,7 +3,7 @@ var APP = window.APP || {};
 (function() {
 	APP.Views = APP.Views || {};
 
-	APP.Views.WelcomeContent = Backbone.Views.extend({
+	APP.Views.WelcomeContent = Backbone.View.extend({
 		initialize: function(config) {
 			this.model.on('change:homeView', function(model, isActive) {
 				if (isActive) { this.showContent(); }
@@ -19,4 +19,4 @@ var APP = window.APP || {};
 			// TODO hide home infos
 		}
 	})
-})
+})();

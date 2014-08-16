@@ -5,13 +5,12 @@ var APP = window.APP || {};
 	APP.Routers.Main = Backbone.Router.extend({
 		routes: {
 			'': 'home',
-			'images/:which': 'images',
+			'images/:whichSet': 'images',
 			'bio': 'about'
 		},
 
 		initialize: function(config) {
 			this.model = config.model;
-
 		},
 
 		home: function() {
@@ -22,21 +21,27 @@ var APP = window.APP || {};
 
 		},
 
-		images: function(which) {
-			if (which) {
-				console.log('load images from: ' + which);
+		images: function(whichSet) {
+			if (whichSet) {
+				console.log('load images from: ' + whichSet);
 			}
-			this.render('imagesOpen');
+
+			console.log(this.model);
+
+			this.render('imagesOpen', whichSet);
 			return this;
 		},
 
-		render: function(whichPage) {
-			_.each(APP.pageState.attributes, function(truthy, page) {
+		render: function(whichPage, whichSet) {
+
+			_.each(this.model.attributes, function(truthy, page) {
 				if (page !== whichPage)
-					this.set(page, false);
+					this.model.set(page, false);
 				else 
-					this.set(page, true);
-			}.bind(APP.pageState));
+					this.model.set(page, true);
+			}.bind(this));
+
+			this.model.set('imagesToShow', whichSet);
 
 			return this;
 		}

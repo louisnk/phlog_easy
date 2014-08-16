@@ -14,7 +14,8 @@ var APP = window.APP || {};
 
     pageState: new Backbone.Model({
       homeView: true,
-      imagesOpen: false
+      imagesOpen: false,
+      imagesToShow: 'day'
     }),
 
     init: function() {
@@ -34,11 +35,11 @@ var APP = window.APP || {};
       };
 
       this.availableViews = {
-        home: new Views.Home(pageConfig('#welcome-content')),
+        home: new Views.WelcomeContent(pageConfig('#home-content')),
         images: new Views.MainImageView(pageConfig('#image-scroller'))
       };
 
-      this.mainRouter = new APP.Routers.Main({model: this.navState});
+      this.mainRouter = new APP.Routers.Main({model: this.pageState});
       Backbone.history.start();
       
       this.bindNavAction();

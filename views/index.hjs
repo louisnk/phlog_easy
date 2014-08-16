@@ -42,6 +42,7 @@
     <script src="/javascripts/main.js"></script>
     <script src="/javascripts/views/nav-sidebar.js"></script>
     <script src="/javascripts/views/main-content.js"></script>
+    <script src="/javascripts/views/home-content.js"></script>
     <script src="/javascripts/views/main-header.js"></script>
     <script src="/javascripts/views/main-footer.js"></script>
     <script src="/javascripts/views/main-images.js"></script>
