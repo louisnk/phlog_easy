@@ -33,6 +33,7 @@
 
 html {
   font: 14px "Bevan", "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #eee;
 }
 
 body {
@@ -55,6 +56,7 @@ body {
 
 #nav-container {
   position: absolute;
+  z-index: 10;
   top: 0;
   bottom: 0;
   left: 100%;
@@ -75,7 +77,7 @@ body {
 #mobile-under {
   padding: 5em 0 2em 22%;
   background-size: cover;
-  background-position: 0 fixed;
+  background-position: 0 0;
   z-index: -10;
 }
 
@@ -86,6 +88,7 @@ body {
 
 #mobile-header {
   position: fixed;
+  z-index: 100;
   bottom: 0;
   height: 80px;
   width: 100%;
@@ -170,7 +173,29 @@ body {
   }
 }
 
+#image-scroller {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 5em;
+  z-index: 0;
+  overflow-y: auto;
 
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: block;
+      padding: 0;
+    }
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
 
 
 

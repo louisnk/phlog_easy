@@ -5,12 +5,9 @@ var APP = window.APP || {};
 	APP.Routers.Main = Backbone.Router.extend({
 		routes: {
 			'': 'home',
-			'images': 'images',
 			'images/:which': 'images',
 			'bio': 'about'
 		},
-
-		target: $('#mobile-under'),
 
 		initialize: function(config) {
 			this.model = config.model;
@@ -18,23 +15,29 @@ var APP = window.APP || {};
 		},
 
 		home: function() {
-			render = function() {
-				this.target.html("I'm working to route things :)");
-			}.bind(this);
-			render();
+		
+			this.render('homeView');
 
 			return this;
+
 		},
 
 		images: function(which) {
 			if (which) {
-				console.log('render images from: ' + which);
+				console.log('load images from: ' + which);
 			}
-			render = function() {
-				APP.state.set('picRollOpen', true);
-			}.bind(this);
-			
-			render();
+			this.render('imagesOpen');
+			return this;
+		},
+
+		render: function(whichPage) {
+			_.each(APP.pageState.attributes, function(truthy, page) {
+				if (page !== whichPage)
+					this.set(page, false);
+				else 
+					this.set(page, true);
+			}.bind(APP.pageState));
+
 			return this;
 		}
 		

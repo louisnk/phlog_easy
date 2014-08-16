@@ -7,14 +7,12 @@ var APP = window.APP || {};
 		initialize: function(config) {
 			this.template = APP.templates.images;
 			
-			this.model.on('change:picRollOpen', function(model, inUse) {
+			this.model.on('change:imagesOpen', function(model, inUse) {
 				if (inUse) { this.showPictures(); }
 				else {
 					this.hidePictures();
 				}
 			}.bind(this));
-
-
 
 			return this;
 		},
@@ -22,6 +20,9 @@ var APP = window.APP || {};
 		showPictures: function() {
 			var test = {
 				images: [
+					{src: 'http://louisnk.com/v2/img/asia.jpg', description: 'me in asia'},
+					{src: 'http://louisnk.com/v2/img/asia.jpg', description: 'me in asia'},
+					{src: 'http://louisnk.com/v2/img/asia.jpg', description: 'me in asia'},
 					{src: 'http://louisnk.com/v2/img/asia.jpg', description: 'me in asia'}
 				]
 			}
@@ -32,7 +33,8 @@ var APP = window.APP || {};
 		},
 
 		hidePictures: function() {
-			this.$el.empty();
+			// TODO hide images to make room 
+			// for other content
 		}
 	})
 })();

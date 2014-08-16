@@ -2,44 +2,55 @@ var APP = window.APP || {};
 
 (function(APP) {
   APP = _.extend(APP, {
-    state: new Backbone.Model({
+    navState: new Backbone.Model({
       navOpen: false,
       navPosition: 'left',
       navType: 'link', // link, toggle, radio
       footerAvailable: false,
       footerTakeover: false,
       canvasHeader: Modernizr.canvas,
-      mainBg: 'url(/images/asia.jpg)',
-      picRollOpen: false
+      mainBg: 'url(/images/enchanted3.jpg)'
+    }),
+
+    pageState: new Backbone.Model({
+      homeView: true,
+      imagesOpen: false
     }),
 
     init: function() {
       var Views = this.Views,
           viewConfig = function(selector) {
-            return { el: selector, model: this.state };
+            return { el: selector, model: this.navState };
+          }.bind(this),
+          pageConfig = function(selector) {
+            return { el : selector, model: this.pageState };
           }.bind(this);
 
       this.activeViews = {
         nav: new Views.NavSidebar(viewConfig('#nav-container')),
         mainContent: new Views.MainContent(viewConfig('#main-content')),
         mainHeader: new Views.MainHeader(viewConfig('#mobile-header')),
-        mainFooter: new Views.MainFooter(viewConfig('#mobile-footer')),
-        picRoll: new Views.MainImageView(viewConfig('#mobile-under'))
+        mainFooter: new Views.MainFooter(viewConfig('#mobile-footer'))
       };
 
-      this.mainRouter = new APP.Routers.Main({model: this.state});
+      this.availableViews = {
+        home: new Views.Home(pageConfig('#welcome-content')),
+        images: new Views.MainImageView(pageConfig('#image-scroller'))
+      };
+
+      this.mainRouter = new APP.Routers.Main({model: this.navState});
       Backbone.history.start();
       
       this.bindNavAction();
       this.stopLocalLinks();
       
-      // this.state.set('footerAvailable', false);
+      // this.navState.set('footerAvailable', false);
     },
 
     bindNavAction: function() {
       $('.nav-toggle').bind('click touchstart', function(e) {
         e.stopPropagation();
-        this.state.set('navOpen', !this.state.get('navOpen'));
+        this.navState.set('navOpen', !this.navState.get('navOpen'));
       }.bind(this));
     }, 
 
