@@ -36,14 +36,16 @@ var APP = window.APP || {};
 		showPictures: function(whichPics) {
 			console.log(whichPics);
 			this.$el.html(this.templates[whichPics])
-						.removeClass('hidden').addClass('shown');
+					.removeClass('hidden')
+					.addClass('shown');
 			
 			return this;
 		},
 
 		hidePictures: function() {
 			console.log('hiding');
-			this.$el.removeClass('shown').addClass('hidden');
+			this.$el.removeClass('shown')
+					.addClass('hidden');
 			// TODO hide images to make room 
 			// for other content
 		}

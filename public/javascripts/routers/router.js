@@ -15,34 +15,37 @@ var APP = window.APP || {};
 
 		home: function() {
 		
-			this.render('homeView');
+			this.setActiveView( 'homeView' );
 
 			return this;
 
 		},
 
 		images: function(whichSet) {
-			if (whichSet) {
-				console.log('load images from: ' + whichSet);
+
+			if (this.model.get( 'imagesOpen' )) {
+				this.setImagesToShow(whichSet);
+			} else {
+				this.setActiveView( 'imagesOpen' );
 			}
 
-			console.log(this.model);
-
-			this.render('imagesOpen', whichSet);
 			return this;
 		},
 
-		render: function(whichPage, whichSet) {
+		setActiveView: function(activePage) {
 
 			_.each(this.model.attributes, function(truthy, page) {
-				if (page !== whichPage)
-					this.model.set(page, false);
-				else 
-					this.model.set(page, true);
+				if (page !== activePage) { this.model.set(page, false); }
+				else { this.model.set(page, true); }
+
 			}.bind(this));
 
-			this.model.set('imagesToShow', whichSet);
 
+			return this;
+		},
+
+		setImagesToShow: function(whichSet) {			
+			this.model.set('imagesToShow', whichSet);
 			return this;
 		}
 		

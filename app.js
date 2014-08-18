@@ -8,8 +8,8 @@ var routes = require('./routes');
 var template = require('./routes/template');
 var http = require('http');
 var path = require('path');
-var hogan = require('hogan.js');
-
+var hogan = require('hjs');
+var mongo = require('mongodb').MongoClient;
 var app = express();
 
 // all environments
@@ -32,6 +32,14 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/templates.js', template.serve);
+
+mongo.connect('mongodb://10.0.0.24:27017/test', function (err, db) {
+    if (err) {
+        throw err;
+    } else {
+        console.log("successfully connected to the database");
+    }
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
