@@ -9,7 +9,7 @@ var APP = window.APP || {};
       footerAvailable: false,
       footerTakeover: false,
       canvasHeader: Modernizr.canvas,
-      mainBg: 'url(/images/enchanted3.jpg)'
+      mainBg: 'url(/images/asia.jpg)'
     }),
 
     pageState: new Backbone.Model({

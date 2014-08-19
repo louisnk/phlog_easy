@@ -33,7 +33,7 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/templates.js', template.serve);
 
-mongo.connect('mongodb://10.0.0.24:27017/test', function (err, db) {
+mongo.connect('mongodb://127.0.0.1:27017/test', function (err, db) {
     if (err) {
         throw err;
     } else {
