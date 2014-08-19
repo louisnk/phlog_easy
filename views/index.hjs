@@ -42,11 +42,12 @@
     <script src="/javascripts/main.js"></script>
     <script src="/javascripts/views/nav-sidebar.js"></script>
     <script src="/javascripts/views/main-content.js"></script>
-    <script src="/javascripts/views/home-content.js"></script>
     <script src="/javascripts/views/main-header.js"></script>
-    <script src="/javascripts/views/main-footer.js"></script>
-    <script src="/javascripts/views/main-images.js"></script>
     <script src="/javascripts/routers/router.js"></script>
+    <script src="/javascripts/views/main-footer.js"></script>
+    <script src="/javascripts/data-manager.js"></script>
+    <script src="/javascripts/views/home-content.js"></script>
+    <script src="/javascripts/views/main-images.js"></script>
     <script src="/templates.js"></script>
 
     <script id="mobile-sidebar-template-1" type="text/template">

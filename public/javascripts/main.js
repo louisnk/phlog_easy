@@ -41,7 +41,8 @@ var APP = window.APP || {};
 
       this.mainRouter = new APP.Routers.Main({model: this.pageState});
       Backbone.history.start();
-      
+
+      this.ImageCollection = new APP.Datas.ImagesCollection();
       this.bindNavAction();
       this.stopLocalLinks();
       
