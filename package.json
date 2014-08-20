@@ -22,8 +22,8 @@
   "dependencies": {
     "express": "*",
     "hjs": "*",
-    "hogan.js": "*",
     "mongodb": "*",
-    "less-middleware": "*"
+    "less-middleware": "*",
+    "mocha": "*"
   }
 }

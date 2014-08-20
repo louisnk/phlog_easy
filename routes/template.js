@@ -6,38 +6,40 @@
 */
 
 exports.serve = function(req, res) {
-	var fs = require('fs');
-	var path = require('path');
+
 	var templateFile = path.join(__dirname, '..', 'views', 'templates.js');
 
-	function serveTemplate(file) {
+	this.serveTemplate = function(file) {
 		fs.readFile(file, {'encoding': 'utf8'}, function(err, datas) {
 			if (!err) {
 				res.setHeader('content-type', 'application/javascript');
 				res.end(datas);
 			} 
 			else {
-				compileTemplates(function(done) {
+				this.compileTemplates(function(err, done) {
 					if (done) {
-						serveTemplate(templateFile);
+						this.serveTemplate(templateFile);
 					} else throw err;
-				});
+				}.bind(this));
 			}
-		})
-	}
+		}.bind(this));
+	}.bind(this);
 
-	function compileTemplates(callback) {
-		var dir = path.join(__dirname, '..', 'views', 'templates'),
-				walker = require('../node/walker'),
-				hogan_compiler = require('../node/hogan_compiler');
+	this.compileTemplates = function(callback) {
+		this.dir = path.join(__dirname, '..', 'views', 'templates');
+		this.walker = require('../node/walker');
+		this.hogan_compiler = require('../node/hogan_compiler');
 
 		walker.findAll(dir, function(err, list) {
-			hogan_compiler.makeTemplates(dir,list, function(err, done) {
-				return callback(done);
-			})
+			if (!err) {
+				hogan_compiler.makeTemplates(dir,list, function(err, done) {
+					return callback(err, done);
+				});				
+			} else console.log('Failed to compile templates');
 		});  
-	}
+	}.bind(this);
 
-	serveTemplate(templateFile);
+	this.serveTemplate(templateFile);
 	
+	return this;
 };
