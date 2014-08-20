@@ -1,46 +1,46 @@
   mongo = require('mongodb').MongoClient;
-exports.work = function(req,res) {
-  this.walker = require('../node/walker');
   mongo.connect('mongodb://10.0.0.24:24242/phlog_easy', function (err, db) {
-      if (err) {
-          throw err;
-      } else {
-        console.log("<--------------- MONGODB Listening --------------- >")
-// collection = db.collection(req.query.collection),
-
-
-        var test = {
-              src: 'http://goodmoneying.com/wp-content/uploads/2013/08/freedom.jpg',
-              alt: 'Freedom?'
-            },
-            getImages = function() {
-              res.statusCode = 200;
-              res.setHeader('content-type', 'application/json');
-              res.end(JSON.stringify(test));
-              // collection.find().toArray(function(err, imgs) {
-              // });
-            }.bind(this),
-
-            storeImages = function() {
-              // this.
-              console.log('store something');
-            }.bind(this);
-
-
-        this.endpoints = {
-          'getImages': getImages
-        }
-
-        this.endpoints[req.params[0]]();
-
-        // function retrieve(db, options, callback) {
-        //   this.collection = options.collection;
-        //   console.log(db[this.collection].find());
-        // }
-
-
-        
-      }
+    if (err) {
+        throw err;
+    } else {
+      console.log("<--------------- MONGODB Listening --------------- >")
+      this.db = db;
+    }
   }.bind(this));
 
-}
+exports.work = function(req,res) {
+
+    var pictureSet = req.query.collection,
+        collection = this.db.collection(pictureSet),
+        getImages = function() {
+          
+          collection.find().toArray(function(err, images) {
+            if (!err) {
+                res.statusCode = 200;
+                res.setHeader('content-type', 'application/json');
+              if (images.length > 0) {
+                res.end(JSON.stringify({'images': images}));                
+              } else res.end('No images found in that collection');
+            } else {
+              res.statusCode = 500;
+              res.setHeader('content-type', 'text');
+              res.end(err);
+            }
+          });
+        }.bind(this),
+
+        storeImages = function() {
+          // TODO
+          console.log('store something');
+        }.bind(this);
+
+
+    this.endpoints = {
+      'getImages': getImages
+    }
+
+    this.endpoints[req.params[0]]();
+
+
+}.bind(this);
+

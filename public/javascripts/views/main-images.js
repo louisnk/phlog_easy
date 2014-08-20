@@ -51,12 +51,8 @@ var APP = window.APP || {};
 				data: {'collection': which},
 				context: this,
 				success: function(data, status) {
-
 					this.pictures = {'images': [data] };
-					
-					console.log(status);
 					this.model.set('imagesLoaded', true);
-					// callback().showPictures();
 				}
 			});
 
@@ -78,7 +74,6 @@ var APP = window.APP || {};
 			
 			return this;
 		},
-
 
 		hidePictures: function() {
 

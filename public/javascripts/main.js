@@ -9,13 +9,14 @@ var APP = window.APP || {};
       footerAvailable: false,
       footerTakeover: false,
       canvasHeader: Modernizr.canvas,
-      mainBg: 'url(/images/asia.jpg)'
+      mainBg: 'url(/images/enchanted3.jpg)'
     }),
 
     pageState: new Backbone.Model({
       homeView: true,
       imagesOpen: false,
-      imagesToShow: 'day'
+      imagesToShow: 'day',
+      imagesLoaded: false
     }),
 
     init: function() {
@@ -42,7 +43,6 @@ var APP = window.APP || {};
       this.mainRouter = new APP.Routers.Main({model: this.pageState});
       Backbone.history.start();
 
-      this.ImageCollection = new APP.Datas.ImagesCollection();
       this.bindNavAction();
       this.stopLocalLinks();
       
