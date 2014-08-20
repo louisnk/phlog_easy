@@ -5,6 +5,7 @@ var APP = window.APP || {};
   APP.Datas = APP.Datas || {};
 
   APP.Datas.modelCitizen = Backbone.Model.extend({
+    url: '/db/getImages?test=true',
     initialize: function() {
       this.on('all', function(e) { console.log('an event fired ----' + e)})
     },
@@ -17,15 +18,21 @@ var APP = window.APP || {};
 
 
   APP.Datas.ImagesCollection = Backbone.Collection.extend({
-    url: '/db/getImages',
     initialize: function(e) {
       console.log("I'm ready...");
       this.on('all', function(e) { console.log('colection event ---- ' + e)});
     },
     
-    model: APP.Datas.modelCitizens
+    model: APP.Datas.modelCitizen
 
   });
+
+  var test = new APP.Datas.modelCitizen({
+    src: 'http://goodmoneying.com/wp-content/uploads/2013/08/freedom.jpg',
+    alt: 'Freedom?'
+  })
+
+  test.fetch();
 
 
 
