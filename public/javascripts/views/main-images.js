@@ -13,15 +13,18 @@ var APP = window.APP || {};
 			]
 		},
 
+		url: '/db/getImages',
+
 		initialize: function(config) {
 			this.template = APP.templates.images;
-			
-			this.templates = {
-				day: this.template.render(this.testData),
-				night: this.template.render(this.testData),
-				abroad: this.template.render(this.testData)
-			}
 
+			this.listen();
+
+			return this;
+		},
+
+		listen: function() {
+			
 			this.model.on('change:imagesOpen', function(model, inUse) {
 				if (inUse) { this.showPictures(this.model.get('imagesToShow')); }
 				else {
@@ -29,18 +32,50 @@ var APP = window.APP || {};
 				}
 			}.bind(this));
 
+			this.model.on('change:imagesToShow', function(model, which) {
+				if (this.model.get( 'imagesOpen' )) {
+					this.pictureSet = which;
+					this.fetchPictures(which, this.renderTemplate);
+				}
+			}.bind(this))
+			
+			return this;
+		},
+
+		fetchPictures: function(which, callback) {
+			var self = this;
+			console.log(this);
+			$.ajax({
+				url: self.url,
+				data: {'collection': which},
+				context: self,
+				success: function(data, status) {
+					self.pictures = {'images': [data] };
+					
+					console.log(data);
+
+					callback().showPictures();
+				}
+			})
 
 			return this;
 		},
 
-		showPictures: function(whichPics) {
-			console.log(whichPics);
-			this.$el.html(this.templates[whichPics])
+		renderTemplate: function() {
+			this.view = this.template.render(this.pictures);
+
+			return this;
+		},
+
+		showPictures: function() {
+
+			this.$el.html(this.view)
 					.removeClass('hidden')
 					.addClass('shown');
 			
 			return this;
 		},
+
 
 		hidePictures: function() {
 			console.log('hiding');

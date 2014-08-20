@@ -24,7 +24,7 @@ var APP = window.APP || {};
 		images: function(whichSet) {
 
 			if (this.model.get( 'imagesOpen' )) {
-				this.setImagesToShow(whichSet);
+				this.model.set('imagesToShow', whichSet);
 			} else {
 				this.setActiveView( 'imagesOpen' );
 			}
@@ -42,12 +42,7 @@ var APP = window.APP || {};
 
 
 			return this;
-		},
-
-		setImagesToShow: function(whichSet) {			
-			this.model.set('imagesToShow', whichSet);
-			return this;
 		}
-		
+
 	});
 })();
