@@ -26,7 +26,8 @@ var APP = window.APP || {};
 			if (this.model.get( 'imagesOpen' )) {
 				this.model.set('imagesToShow', whichSet);
 			} else {
-				this.setActiveView( 'imagesOpen' );
+				this.setActiveView( 'imagesOpen' )
+						.model.set('imagesToShow', whichSet);
 			}
 
 			return this;
@@ -35,9 +36,10 @@ var APP = window.APP || {};
 		setActiveView: function(activePage) {
 
 			_.each(this.model.attributes, function(truthy, page) {
-				if (page !== activePage) { this.model.set(page, false); }
-				else { this.model.set(page, true); }
-
+				if (page !== 'imagesToShow') {
+					if (page !== activePage) { this.model.set(page, false); }
+					else { this.model.set(page, true); }					
+				}
 			}.bind(this));
 
 

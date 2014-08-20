@@ -5,9 +5,7 @@ exports.work = function(req,res) {
       if (err) {
           throw err;
       } else {
-        console.log('listening for db things');
-        console.log("query: --------------------");
-        console.log(req.query);
+        console.log("<--------------- MONGODB Listening --------------- >")
 // collection = db.collection(req.query.collection),
 
 
@@ -16,7 +14,6 @@ exports.work = function(req,res) {
               alt: 'Freedom?'
             },
             getImages = function() {
-              console.log('getting some images from the DB :)');
               res.statusCode = 200;
               res.setHeader('content-type', 'application/json');
               res.end(JSON.stringify(test));
