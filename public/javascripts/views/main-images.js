@@ -30,9 +30,9 @@ var APP = window.APP || {};
 				else { this.hidePictures();	}
 			}.bind(this));
 
-			this.model.on('change:imagesToShow', function(model, which) {
+			this.model.on('change:imagesToShow', function(model, whichSet) {
 				if (this.model.get( 'imagesOpen' )) {
-					this.fetchPictures(which).model.set('imagesLoaded', false);
+					this.fetchPictures(whichSet).model.set('imagesLoaded', false);
 				} else { } // Do nothing, because that's handled by the first listener
 			}.bind(this));
 
@@ -44,14 +44,14 @@ var APP = window.APP || {};
 			return this;
 		},
 
-		fetchPictures: function(which) {
+		fetchPictures: function(whichSet) {
 
 			$.ajax({
 				url: this.url,
-				data: {'collection': which},
+				data: {'collection': whichSet},
 				context: this,
 				success: function(data, status) {
-					this.pictures = {'images': [data] };
+					this.pictures = data;
 					this.model.set('imagesLoaded', true);
 				}
 			});

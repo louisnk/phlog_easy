@@ -11,6 +11,8 @@ fs = require('fs');
 db = require('./routes/db');
 path = require('path');
 hogan = require('hjs');
+Emitter = require('events').EventEmitter;
+emitter = new Emitter();
 
 var app = express();
 
