@@ -55,26 +55,26 @@ exports.work = function(req,res) {
 }.bind(this);
 
 exports.readAndStore = function(pictureSet) {
-
   this.walker = require('../node/walker');
     var dir = path.join(__dirname, '..', 'public', 'images', pictureSet),
         imgObjects = [];
 
     this.walker.findAll(dir, function(err, list) {
-      list.forEach(function(file, i) {
-        imgObjects.push({
-          'src': file.split('public')[1], 
-          'description': 'A picture from the ' + pictureSet 
-        })
-      })
+      if (list.length > 0) {
+        list.forEach(function(file, i) {
+          imgObjects.push({
+            'src': file.split('public')[1], 
+            'description': 'A picture from the ' + pictureSet 
+          });
+        });
 
-      if (imgObjects.length > 0) {
         this.collection.insert(imgObjects, function(err, datas) {
           if (!err) {
             emitter.emit('imagesStored', datas);
           }
-        })        
-      } else 
+        })
+      } else emitter.emit('imagesStored', false);
+
 
     }.bind(this))
 }.bind(this);
