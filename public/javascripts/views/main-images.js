@@ -27,41 +27,44 @@ var APP = window.APP || {};
 			
 			this.model.on('change:imagesOpen', function(model, inUse) {
 				if (inUse) { this.showPictures(this.model.get('imagesToShow')); }
-				else {
-					this.hidePictures();
-				}
+				else { this.hidePictures();	}
 			}.bind(this));
 
 			this.model.on('change:imagesToShow', function(model, which) {
 				if (this.model.get( 'imagesOpen' )) {
-					this.pictureSet = which;
-					this.fetchPictures(which, this.renderTemplate);
-				}
-			}.bind(this))
+					this.fetchPictures(which).model.set('imagesLoaded', false);
+				} else { } // Do nothing, because that's handled by the first listener
+			}.bind(this));
+
+			this.model.on('change:imagesLoaded', function(model, loaded) {
+				if (loaded) { this.renderTemplate().showPictures(); }
+				else this.hidePictures();
+			}.bind(this));
 			
 			return this;
 		},
 
-		fetchPictures: function(which, callback) {
-			var self = this;
-			console.log(this);
-			$.ajax({
-				url: self.url,
-				data: {'collection': which},
-				context: self,
-				success: function(data, status) {
-					self.pictures = {'images': [data] };
-					
-					console.log(data);
+		fetchPictures: function(which) {
 
-					callback().showPictures();
+			$.ajax({
+				url: this.url,
+				data: {'collection': which},
+				context: this,
+				success: function(data, status) {
+
+					this.pictures = {'images': [data] };
+					
+					console.log(status);
+					this.model.set('imagesLoaded', true);
+					// callback().showPictures();
 				}
-			})
+			});
 
 			return this;
 		},
 
 		renderTemplate: function() {
+			console.log('render something');
 			this.view = this.template.render(this.pictures);
 
 			return this;
@@ -78,11 +81,11 @@ var APP = window.APP || {};
 
 
 		hidePictures: function() {
-			console.log('hiding');
+
 			this.$el.removeClass('shown')
 					.addClass('hidden');
-			// TODO hide images to make room 
-			// for other content
+
+			return this;
 		}
 	})
 })();

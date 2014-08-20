@@ -35,8 +35,8 @@ var APP = window.APP || {};
 
 		setActiveView: function(activePage) {
 
-			_.each(this.model.attributes, function(truthy, page) {
-				if (page !== 'imagesToShow') {
+			_.each(this.model.attributes, function(open, page) {
+				if (page !== 'imagesToShow' && page !== 'imagesLoaded') {
 					if (page !== activePage) { this.model.set(page, false); }
 					else { this.model.set(page, true); }					
 				}
