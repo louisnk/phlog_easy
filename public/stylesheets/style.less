@@ -29,11 +29,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
+::-webkit-scrollbar { 
+    display: none; 
+}
 
 html {
   font: 14px "Bevan", "Lucida Grande", Helvetica, Arial, sans-serif;
   color: #eee;
+  overflow: hidden;
 }
 
 body {
@@ -78,6 +81,7 @@ body {
 }
 
 #mobile-under {
+  position: fixed;
   padding: 5em 0 2em 22%;
   background-size: cover;
   background-position: 0 0;
@@ -180,8 +184,9 @@ body {
   position: absolute;
   top: 0;
   left: 0;
+  height: 70%;
   margin: 0;
-  padding: 5em;
+  padding: 5em 5em 10em;
   z-index: 0;
   overflow-y: auto;
 
@@ -197,6 +202,12 @@ body {
 
   img {
     max-width: 100%;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 }
 
