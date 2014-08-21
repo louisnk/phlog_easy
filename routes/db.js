@@ -4,7 +4,7 @@ mongo.connect('mongodb://127.0.0.1:24242/phlog_easy', function (err, db) {
   if (err) {
       throw err;
   } else {
-    console.log("<--------------- MONGODB Listening --------------- >")
+    console.log("< --------------- MONGODB Listening --------------- >")
     this.db = db;
   }
 }.bind(this));
