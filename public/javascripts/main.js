@@ -41,10 +41,10 @@ var APP = window.APP || {};
       };
 
       this.mainRouter = new APP.Routers.Main({model: this.pageState});
-      Backbone.history.start();
+      // Backbone.history = Backbone.history || new Backbone.history(); 
+      Backbone.history.start({pushState: true});
 
-      this.bindNavAction();
-      this.stopLocalLinks();
+      this.bindNavAction().stopLocalLinks().checkEntryPoint();
       
       // this.navState.set('footerAvailable', false);
     },
@@ -54,10 +54,11 @@ var APP = window.APP || {};
         e.stopPropagation();
         this.navState.set('navOpen', !this.navState.get('navOpen'));
       }.bind(this));
+      return this;
     }, 
 
     stopLocalLinks: function() {
-      $('body a[href^="#/"]').bind('click touchstart', function(e) {
+      $('body a[href^="/"]').bind('click touchstart', function(e) {
         e.preventDefault();
 
         this.mainRouter.navigate(
@@ -65,6 +66,16 @@ var APP = window.APP || {};
            trigger: true 
          });
       }.bind(this));
+      return this;
+    },
+
+    checkEntryPoint: function() {
+      if (window.location.pathname !== '/') {
+        console.log(window.location.pathname);
+        this.mainRouter.navigate(window.location.pathname, { trigger: true });
+      }
+
+      return this;
     }
     
 

@@ -1,5 +1,5 @@
   mongo = require('mongodb').MongoClient;
-  mongo.connect('mongodb://127.0.0.1:24242/phlog_easy', function (err, db) {
+  mongo.connect('mongodb://10.0.0.24:24242/phlog_easy', function (err, db) {
     if (err) {
         throw err;
     } else {
@@ -13,13 +13,19 @@ exports.work = function(req,res) {
     
     var pictureSet = req.query.collection,
         getImages = function() {
-
           this.collection.find().toArray(function(err, images) {
             if (!err) {
               res.statusCode = 200;
               res.setHeader('content-type', 'application/json');
 
               if (images.length > 0) {
+
+                // to fix paths for windows...
+                images.forEach(function(image, i) {
+                  image.src = '../' + image.src.split('public\\')[1];
+                });
+
+                // nothing to see here
                 res.end(JSON.stringify({'images': images}));                
               } else {
                 this.readAndStore(pictureSet);

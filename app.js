@@ -36,6 +36,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/templates.js', template.serve);
+app.get('/photos/*', routes.index);
 
 app.get('/db/*', db.work);
 
