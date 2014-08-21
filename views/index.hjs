@@ -51,25 +51,25 @@
 
     <script id="mobile-sidebar-template-1" type="text/template">
       <div class="nav vertical">
-        <a href="#/" alt="Home">
+        <a href="/" alt="Home">
           <div class="nav-button">
             <div class= "icon icon-user"></div>
             <div class="text">Behind the camera</div>
           </div>
         </a>
-        <a href="#/images/night" alt="Photos at night">
+        <a href="/photos/night" alt="Photos at night">
           <div class="nav-button">
             <div class="icon icon-camera night"></div>
             <div class="text">Night</div>
           </div>
         </a>
-        <a href="#/images/day" alt="Photos in the day">
+        <a href="/photos/day" alt="Photos in the day">
           <div class="nav-button">
             <div class="icon icon-camera"></div>
             <div class="text">Light</div>
           </div>
         </a>
-        <a href="#/images/abroad" alt="Photos from abroad">
+        <a href="/photos/abroad" alt="Photos from abroad">
 
           <div class="nav-button">
             <div class="icon icon-earth"></div>

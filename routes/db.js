@@ -1,25 +1,31 @@
-var mongo = require('mongodb').MongoClient;
 
-mongo.connect('mongodb://127.0.0.1:24242/phlog_easy', function (err, db) {
-  if (err) {
-      throw err;
-  } else {
-    console.log("< --------------- MONGODB Listening --------------- >")
-    this.db = db;
-  }
-}.bind(this));
+var mongo = require('mongodb').MongoClient;
+  mongo.connect('mongodb://10.0.0.24:24242/phlog_easy', function (err, db) {
+    if (err) {
+        throw err;
+    } else {
+      console.log("<--------------- MONGODB Listening --------------- >")
+      this.db = db;
+    }
+  }.bind(this));
 
 exports.work = function(req,res) {
 
     
     var pictureSet = req.query.collection,
         getImages = function() {
-
           this.collection.find().toArray(function(err, images) {
             if (!err) {
             
               if (images.length > 0) {
+                // to fix paths for windows...
+                images.forEach(function(image, i) {
+                  image.src = '../' + image.src.split('public\\')[1];
+                });
+
+                // nothing to see here
                 this.sendJSON(res, JSON.stringify({'images': images}));                
+
               } else {
                 this.readAndStore(pictureSet);
                 emitter.addListener('imagesStored', function(datas) {

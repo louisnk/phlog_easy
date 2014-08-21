@@ -4,19 +4,12 @@ var APP = window.APP || {};
 	APP.Views = APP.Views || {};
 
 	APP.Views.MainImageView = Backbone.View.extend({
-		testData: {
-			images: [
-				{src: 'http://louisnk.com/v2/img/asia.jpg', description: 'me in asia'},
-				{src: 'http://louisnk.com/v2/img/asia.jpg', description: 'me in asia'},
-				{src: 'http://louisnk.com/v2/img/asia.jpg', description: 'me in asia'},
-				{src: 'http://louisnk.com/v2/img/asia.jpg', description: 'me in asia'}
-			]
-		},
 
+		
 		url: '/db/getImages',
 
 		initialize: function(config) {
-			this.template = APP.templates.images;
+			this.template = APP.templates.images,
 
 			this.listen();
 
@@ -26,14 +19,17 @@ var APP = window.APP || {};
 		listen: function() {
 			
 			this.model.on('change:imagesOpen', function(model, inUse) {
-				if (inUse) { this.showPictures(this.model.get('imagesToShow')); }
+				if (inUse) { 
+					this.fetchPictures(this.model.get('imagesToShow'))
+							.model.set('imagesLoaded', false);
+				}
 				else { this.hidePictures();	}
 			}.bind(this));
 
 			this.model.on('change:imagesToShow', function(model, whichSet) {
 				if (this.model.get( 'imagesOpen' )) {
 					this.fetchPictures(whichSet).model.set('imagesLoaded', false);
-				} else { } // Do nothing, because that's handled by the first listener
+				} else { this.hidePictures(); } 
 			}.bind(this));
 
 			this.model.on('change:imagesLoaded', function(model, loaded) {
@@ -60,7 +56,6 @@ var APP = window.APP || {};
 		},
 
 		renderTemplate: function() {
-			console.log('render something');
 			this.view = this.template.render(this.pictures);
 
 			return this;
