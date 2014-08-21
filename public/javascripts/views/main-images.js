@@ -6,7 +6,7 @@ var APP = window.APP || {};
 	APP.Views.MainImageView = Backbone.View.extend({
 
 		
-		url: '/db/getImages',
+		url: '/getImages',
 
 		initialize: function(config) {
 			this.template = APP.templates.images,
@@ -44,7 +44,7 @@ var APP = window.APP || {};
 
 			$.ajax({
 				url: this.url,
-				data: {'collection': whichSet},
+				data: {'pictureSet': whichSet},
 				context: this,
 				success: function(data, status) {
 					this.pictures = data;

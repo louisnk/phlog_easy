@@ -6,9 +6,11 @@
 var express = require('express');
 var routes = require('./routes');
 var template = require('./routes/template');
+var files = require('./routes/files')
 var http = require('http');
 fs = require('fs');
-db = require('./routes/db');
+// db = require('./routes/db');
+dirWalker = require('./node/walker');
 path = require('path');
 hogan = require('hjs');
 Emitter = require('events').EventEmitter;
@@ -38,8 +40,14 @@ app.get('/', routes.index);
 app.get('/templates.js', template.serve);
 app.get('/photos/*', routes.index);
 
-app.get('/db/*', db.work);
+app.get('/getImages', files.serve);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+sendJSON = function(res, data) {
+  res.statusCode = 200;
+  res.setHeader('content-type', 'application/json');
+  res.end(data);
+}
