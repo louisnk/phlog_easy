@@ -11,6 +11,7 @@ fs = require('fs');
 db = require('./routes/db');
 path = require('path');
 hogan = require('hjs');
+imgDir = path.join(__dirname, 'public', 'images');
 
 var app = express();
 
