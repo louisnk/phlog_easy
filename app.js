@@ -11,7 +11,8 @@ fs = require('fs');
 db = require('./routes/db');
 path = require('path');
 hogan = require('hjs');
-imgDir = path.join(__dirname, 'public', 'images');
+Emitter = require('events').EventEmitter;
+emitter = new Emitter();
 
 var app = express();
 
