@@ -9,7 +9,6 @@ var template = require('./routes/template');
 var files = require('./routes/files')
 var http = require('http');
 fs = require('fs');
-// db = require('./routes/db');
 dirWalker = require('./node/walker');
 path = require('path');
 hogan = require('hjs');
