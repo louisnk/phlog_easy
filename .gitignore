@@ -3,3 +3,5 @@
 /node_modules/*
 */icons/*
 /public/javascripts/_snippets.js
+*/images/*
+nmp-debug.log
