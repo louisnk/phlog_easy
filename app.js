@@ -6,10 +6,8 @@
 var express = require('express');
 var routes = require('./routes');
 var template = require('./routes/template');
-var files = require('./routes/files')
 var http = require('http');
 fs = require('fs');
-// db = require('./routes/db');
 dirWalker = require('./node/walker');
 path = require('path');
 hogan = require('hjs');
@@ -36,11 +34,6 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/templates.js', template.serve);
-app.get('/photos/*', routes.index);
-
-app.get('/getImages', files.serve);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
@@ -51,3 +44,45 @@ sendJSON = function(res, data) {
   res.setHeader('content-type', 'application/json');
   res.end(data);
 }
+
+
+var searchDir = path.join(__dirname, 'public', 'images');
+fileTree = {};
+
+dirWalker.findAll(searchDir, {toJSON: true}, function(err, list) {
+  fileTree = list;
+});
+
+serve = function(req,res) {
+
+  var pictureSet = req.query.pictureSet,
+      files = [];
+
+  function makeObj(file,pictureSet) {
+    return {
+      src: '../' + file.split(/(public)[\\\/]/)[2].replace(/[\\\/]/g, '/'),
+      description: 'A picture from the ' + pictureSet      
+    }
+  }
+
+  if (fileTree[pictureSet].length > 0) {
+    fileTree[pictureSet].forEach(function(file, j) {
+      files.push(makeObj(file,pictureSet));
+    });
+    sendJSON(res, JSON.stringify({'images': files}));
+  } else {
+    sendJSON(res, 'No images found for that directory');
+  }
+
+}
+
+
+
+
+
+
+app.get('/', routes.index);
+app.get('/templates.js', template.serve);
+app.get('/photos/*', routes.index);
+
+app.get('/getImages', serve);
