@@ -8,7 +8,7 @@ exports.serve = function(req,res) {
 			this.imageList = [];
 			list.forEach(function(file, i) {
 				this.imageList.push({
-					'src': file.split('public')[1],
+					'src': file.split('public\\')[1].replace('\\', '/'),
 					'description': 'A photo from ' + this.pictureSet
 				});
 			}.bind(this));
