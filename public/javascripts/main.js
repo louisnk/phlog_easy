@@ -71,7 +71,6 @@ var APP = window.APP || {};
 
     checkEntryPoint: function() {
       if (window.location.pathname !== '/') {
-        console.log(window.location.pathname);
         this.mainRouter.navigate(window.location.pathname, { trigger: true });
       }
 
