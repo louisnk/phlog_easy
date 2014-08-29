@@ -47,16 +47,22 @@ sendJSON = function(res, data) {
 
 
 var searchDir = path.join(__dirname, 'public', 'images');
-fileTree = {};
+directoryTree = {};
 
-dirWalker.findAll(searchDir, {toJSON: true}, function(err, list) {
-  fileTree = list;
+dirWalker.findAll(searchDir, {toJSON: true}, function(err, fileList) {
+  directoryTree = fileList;
 });
+
 
 serve = function(req,res) {
 
-  var pictureSet = req.query.pictureSet,
-      files = [];
+
+  function queryParams(query) {
+    return {
+      pictureSet: query.pictureSet,
+      thumbs: query.thumbs
+    }
+  }
 
   function makeObj(file,pictureSet) {
     return {
@@ -65,11 +71,36 @@ serve = function(req,res) {
     }
   }
 
-  if (fileTree[pictureSet].length > 0) {
-    fileTree[pictureSet].forEach(function(file, j) {
-      files.push(makeObj(file,pictureSet));
-    });
-    sendJSON(res, JSON.stringify({'images': files}));
+  function processImageArray(imageArray) {
+    return {
+      files: [],
+      pushFiles: function() {
+        imageArray.forEach(function(file,i) {
+          this.files.push( makeObj(file, requested.pictureSet) );
+        }.bind(this));
+
+        return this;     
+      }
+    }.pushFiles();
+  }
+
+  var requested = queryParams(req.query),
+      imageObject = directoryTree[requested.pictureSet];
+
+  if (imageObject) {
+    if (requested.thumbs &&
+        Object.keys(imageObject.thumbs).length > 0) { 
+      sendJSON(res, JSON.stringify({
+        'images': processImageArray(imageObject.thumbs).files
+      }) );
+    } else if (Object.keys(imageObject.images).length > 0) { 
+      sendJSON(res, JSON.stringify({
+        'images': processImageArray(imageObject.images).files
+      }) );
+    } else sendJSON(res, 'No images found');
+  
+
+  // sendJSON(res, JSON.stringify({'images': files}));
   } else {
     sendJSON(res, 'No images found for that directory');
   }
