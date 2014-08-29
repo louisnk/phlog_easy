@@ -64,10 +64,15 @@ serve = function(req,res) {
     }
   }
 
+  function generateHash() {
+    return parseInt(Math.random() * 10e7);
+  }
+
   function makeObj(file,pictureSet) {
     return {
       src: '../' + file.split(/(public)[\\\/]/)[2].replace(/[\\\/]/g, '/'),
-      description: 'A picture from the ' + pictureSet      
+      description: 'A picture from the ' + pictureSet,
+      id: generateHash() + requested.pictureSet
     }
   }
 

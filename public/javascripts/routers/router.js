@@ -14,7 +14,6 @@ var APP = window.APP || {};
 		},
 
 		home: function() {
-		
 			this.setActiveView( 'homeView' );
 
 			return this;

@@ -2,7 +2,11 @@
 	<h3>Images for the taking</h3>
 	<ul>
 		{{#images}}
-			<li><img src="{{src}}" alt="{{description}}"></li>
+			<li>
+        <a href="/images/{{id}}">
+          <img src="{{src}}" alt="{{description}}">
+        </a>
+      </li>
 		{{/images}}
 	</ul>
 </div>
