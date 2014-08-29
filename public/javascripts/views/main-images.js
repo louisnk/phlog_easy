@@ -44,7 +44,7 @@ var APP = window.APP || {};
 
 			$.ajax({
 				url: this.url,
-				data: {'pictureSet': whichSet},
+				data: {'pictureSet': whichSet, 'thumbs': true},
 				context: this,
 				success: function(data, status) {
 					this.pictures = data;
