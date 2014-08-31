@@ -15,8 +15,9 @@ var APP = window.APP || {};
     pageState: new Backbone.Model({
       homeView: true,
       imagesOpen: false,
-      imagesToShow: 'day',
-      imagesLoaded: false
+      imageToShow: '000',
+      imagesLoaded: false,
+      imageSetToShow: 'day'
     }),
 
     init: function() {
