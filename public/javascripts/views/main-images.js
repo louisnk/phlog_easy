@@ -20,13 +20,13 @@ var APP = window.APP || {};
 			
 			this.model.on('change:imagesOpen', function(model, inUse) {
 				if (inUse) { 
-					this.fetchPictures(this.model.get('imagesToShow'))
+					this.fetchPictures(this.model.get('imageSetToShow'))
 							.model.set('imagesLoaded', false);
 				}
 				else { this.hidePictures();	}
 			}.bind(this));
 
-			this.model.on('change:imagesToShow', function(model, whichSet) {
+			this.model.on('change:imageSetToShow', function(model, whichSet) {
 				if (this.model.get( 'imagesOpen' )) {
 					this.fetchPictures(whichSet).model.set('imagesLoaded', false);
 				} else { this.hidePictures(); } 
