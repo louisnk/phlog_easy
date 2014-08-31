@@ -65,7 +65,7 @@ serve = function(req,res) {
   }
 
   function generateHash() {
-    return parseInt(Math.random() * 10e7);
+    return parseInt(Math.random() * 10e8);
   }
 
   function makeObj(file,pictureSet) {
