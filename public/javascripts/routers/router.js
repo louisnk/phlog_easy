@@ -5,8 +5,9 @@ var APP = window.APP || {};
 	APP.Routers.Main = Backbone.Router.extend({
 		routes: {
 			'': 'home',
+			'bio': 'about',
 			'photos/:whichSet': 'photos',
-			'bio': 'about'
+			'photos/:whichSet/:id': 'photoById'
 		},
 
 		initialize: function(config) {
@@ -21,8 +22,15 @@ var APP = window.APP || {};
 		},
 
 		photos: function(whichSet) {
-			this.model.set('imagesToShow', whichSet);
+			this.model.set( 'imageSetToShow', whichSet);
 			this.setActiveView( 'imagesOpen' );
+
+			return this;
+		},
+
+		photoById: function(whichSet, id) {
+			this.model.set( 'imageSetToShow', whichSet);
+			this.setActiveView( 'imagesOpen' ).model.set( 'imageToShow', id);
 
 			return this;
 		},
@@ -30,7 +38,7 @@ var APP = window.APP || {};
 		setActiveView: function(activePage) {
 			
 			_.each(this.model.attributes, function(open, page) {
-				if (page !== 'imagesToShow' && page !== 'imagesLoaded') {
+				if (page !== 'imageSetToShow' && page !== 'imagesLoaded' ) {
 					if (page !== activePage) { this.model.set(page, false); }
 					else { this.model.set(page, true); }					
 				}
