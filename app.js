@@ -11,6 +11,7 @@ fs = require('fs');
 dirWalker = require('./node/walker');
 path = require('path');
 hogan = require('hjs');
+_ = require('lodash');
 Emitter = require('events').EventEmitter;
 emitter = new Emitter();
 
@@ -47,15 +48,58 @@ sendJSON = function(res, data) {
 
 
 var searchDir = path.join(__dirname, 'public', 'images');
-directoryTree = {};
+directoryTree = {},
+hits = 0;
 
 dirWalker.findAll(searchDir, {toJSON: true}, function(err, fileList) {
-  directoryTree = fileList;
+  hits++;
+
+  function processImageArray(imageArray, pictureSet) {
+    return {
+      files: [],
+      pushFiles: function() {
+        imageArray.forEach(function(file,i) {
+          this.files.push( makeObj(file, pictureSet) );
+        }.bind(this));
+
+        return this;     
+      }
+    }.pushFiles().files;
+  }
+
+  function makeObj(file,pictureSet) {
+    return {
+      src: '../' + file.split(/(public)[\\\/]/)[2].replace(/[\\\/]/g, '/'),
+      description: 'A picture from the ' + pictureSet,
+      id: generateHash() + pictureSet
+    }
+  }
+
+  function generateHash() {
+    return parseInt(Math.random() * 10e8);
+  }
+
+  if (hits > 2) {
+    directoryTree = fileList;
+    _.each(directoryTree, function(set, i) {
+      if (set.images.length > 0) {
+        console.log(i);
+        _.each(set, function(size, j) {
+          // if (i == 'night' && j === 'images') console.log(size);
+          directoryTree[i][j] = processImageArray(size, i);
+          // if (i == 'night' && j === 'images') console.log(size);
+        });        
+      }
+    });
+    console.log(directoryTree.day.images);
+  } else directoryTree = fileList;
+
+
+
 });
 
 
 serve = function(req,res) {
-
 
   function queryParams(query) {
     return {
@@ -64,30 +108,8 @@ serve = function(req,res) {
     }
   }
 
-  function generateHash() {
-    return parseInt(Math.random() * 10e8);
-  }
 
-  function makeObj(file,pictureSet) {
-    return {
-      src: '../' + file.split(/(public)[\\\/]/)[2].replace(/[\\\/]/g, '/'),
-      description: 'A picture from the ' + pictureSet,
-      id: generateHash() + requested.pictureSet
-    }
-  }
-
-  function processImageArray(imageArray) {
-    return {
-      files: [],
-      pushFiles: function() {
-        imageArray.forEach(function(file,i) {
-          this.files.push( makeObj(file, requested.pictureSet) );
-        }.bind(this));
-
-        return this;     
-      }
-    }.pushFiles();
-  }
+  
 
   var requested = queryParams(req.query),
       imageObject = directoryTree[requested.pictureSet];
@@ -95,13 +117,9 @@ serve = function(req,res) {
   if (imageObject) {
     if (requested.thumbs &&
         Object.keys(imageObject.thumbs).length > 0) { 
-      sendJSON(res, JSON.stringify({
-        'images': processImageArray(imageObject.thumbs).files
-      }) );
+      sendJSON(res, JSON.stringify(imageObject.thumbs) );
     } else if (Object.keys(imageObject.images).length > 0) { 
-      sendJSON(res, JSON.stringify({
-        'images': processImageArray(imageObject.images).files
-      }) );
+      sendJSON(res, JSON.stringify(imageObject.images) );
     } else sendJSON(res, 'No images found');
   
 
