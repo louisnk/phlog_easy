@@ -36,6 +36,8 @@ var APP = window.APP || {};
 				if (loaded) { this.renderTemplate().showPictures(); }
 				else this.hidePictures();
 			}.bind(this));
+
+			this.$el.on('click', 'img', this.setImageToShow);
 			
 			return this;
 		},
@@ -76,6 +78,13 @@ var APP = window.APP || {};
 					.addClass('hidden');
 
 			return this;
+		},
+
+		setImageToShow: function(e) {
+			e.preventDefault();
+			console.log($(e.target).attr('href'));
+
+			// this.
 		}
 	})
 })();
