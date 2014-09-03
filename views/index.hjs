@@ -47,6 +47,7 @@
     <script src="/javascripts/views/main-footer.js"></script>
     <script src="/javascripts/views/home-content.js"></script>
     <script src="/javascripts/views/main-images.js"></script>
+    <script src="/javascripts/views/single-image.js"></script>
     <script src="/templates.js"></script>
 
     <script id="mobile-sidebar-template-1" type="text/template">

@@ -37,7 +37,9 @@ var APP = window.APP || {};
 				else this.hidePictures();
 			}.bind(this));
 
-			this.$el.on('click', 'img', this.setImageToShow);
+			// this.$el.on('click', 'img', function(e) {
+			// 	this.setImageToShow(e);
+			// }.bind(this));
 			
 			return this;
 		},
@@ -49,7 +51,8 @@ var APP = window.APP || {};
 				data: {'pictureSet': whichSet, 'thumbs': true},
 				context: this,
 				success: function(data, status) {
-					this.pictures = data;
+
+					this.pictures = { images: data };
 					this.model.set('imagesLoaded', true);
 				}
 			});
@@ -82,9 +85,9 @@ var APP = window.APP || {};
 
 		setImageToShow: function(e) {
 			e.preventDefault();
-			console.log($(e.target).attr('href'));
 
-			// this.
+			console.log($(e.delegateTarget));
+			
 		}
 	})
 })();

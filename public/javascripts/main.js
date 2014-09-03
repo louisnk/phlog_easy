@@ -9,7 +9,7 @@ var APP = window.APP || {};
       footerAvailable: false,
       footerTakeover: false,
       canvasHeader: Modernizr.canvas,
-      mainBg: 'url(/images/enchanted3.jpg)'
+      mainBg: 'url(/images/asia.jpg)'
     }),
 
     pageState: new Backbone.Model({
@@ -38,7 +38,8 @@ var APP = window.APP || {};
 
       this.availableViews = {
         home: new Views.WelcomeContent(pageConfig('#home-content')),
-        images: new Views.MainImageView(pageConfig('#image-scroller'))
+        images: new Views.MainImageView(pageConfig('#image-scroller')),
+        singleImage: new Views.SingleImage(pageConfig('#image-scroller'))
       };
 
       this.mainRouter = new APP.Routers.Main({model: this.pageState});

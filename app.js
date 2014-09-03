@@ -69,9 +69,10 @@ dirWalker.findAll(searchDir, {toJSON: true}, function(err, fileList) {
 
   function makeObj(file,pictureSet) {
     return {
-      src: '../' + file.split(/(public)[\\\/]/)[2].replace(/[\\\/]/g, '/'),
+      src: '../' + file.split(/(public)[\/\\]/)[2].replace(/[\\\/]/g, '/'),
       description: 'A picture from the ' + pictureSet,
-      id: generateHash() + pictureSet
+      id: generateHash() + pictureSet,
+      set: pictureSet
     }
   }
 
@@ -83,15 +84,12 @@ dirWalker.findAll(searchDir, {toJSON: true}, function(err, fileList) {
     directoryTree = fileList;
     _.each(directoryTree, function(set, i) {
       if (set.images.length > 0) {
-        console.log(i);
         _.each(set, function(size, j) {
-          // if (i == 'night' && j === 'images') console.log(size);
           directoryTree[i][j] = processImageArray(size, i);
-          // if (i == 'night' && j === 'images') console.log(size);
+          // if (i == 'night' && j === 'images') console.log(directoryTree[i][j]);
         });        
       }
     });
-    console.log(directoryTree.day.images);
   } else directoryTree = fileList;
 
 
@@ -104,11 +102,12 @@ serve = function(req,res) {
   function queryParams(query) {
     return {
       pictureSet: query.pictureSet,
-      thumbs: query.thumbs
+      thumbs: query.thumbs,
+      id: query.id
     }
   }
 
-
+  console.log(req.query);
   
 
   var requested = queryParams(req.query),
@@ -118,8 +117,11 @@ serve = function(req,res) {
     if (requested.thumbs &&
         Object.keys(imageObject.thumbs).length > 0) { 
       sendJSON(res, JSON.stringify(imageObject.thumbs) );
-    } else if (Object.keys(imageObject.images).length > 0) { 
-      sendJSON(res, JSON.stringify(imageObject.images) );
+    } else if (requested.id && Object.keys(imageObject.images).length > 0) { 
+
+      sendJSON(res, JSON.stringify(
+        _.where(imageObject.images, { id: requested.id }) 
+      ));
     } else sendJSON(res, 'No images found');
   
 
