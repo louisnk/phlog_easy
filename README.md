@@ -16,7 +16,7 @@ e.g. - href='/images/seattle' will load pictures from ./public/images/seattle
 
 ##TODO
 
--create template for single image view
+-front load image data JSON
 
 -Lots of style love and responsiveness
 
