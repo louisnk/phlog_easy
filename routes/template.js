@@ -35,7 +35,7 @@ exports.serve = function(req, res) {
 				hogan_compiler.makeTemplates(dir,list, function(err, done) {
 					return callback(err, done);
 				});				
-			} else console.log('Failed to compile templates');
+			} else console.log('Failed to compile templates - ' + err);
 		});  
 	}.bind(this);
 

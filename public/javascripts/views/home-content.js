@@ -13,10 +13,12 @@ var APP = window.APP || {};
 
 		showContent: function() {
 			// TODO show home template
+
 		},
 
 		hideContent: function() {
 			// TODO hide home infos
+			
 		}
 	})
 })();
