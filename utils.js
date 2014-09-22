@@ -23,7 +23,7 @@ module.exports = {
   },
   makeObj: function(file, pictureSet, subset) {
     return {
-      src: path.join('images', pictureSet, subset, file).replace(/[\\]/g, '/'),
+      src: path.join('/', 'images', pictureSet, subset, file).replace(/[\\]/g, '/'),
       description: 'A picture from the ' + pictureSet,
       id: this.generateHash() + pictureSet,
       set: pictureSet
