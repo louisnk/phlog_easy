@@ -4,6 +4,7 @@
 * if not found, try to compile then serve.
 *
 */
+var reader = require('recursive-readdir');
 
 exports.serve = function(req, res) {
 
@@ -26,11 +27,10 @@ exports.serve = function(req, res) {
 	}.bind(this);
 
 	this.compileTemplates = function(callback) {
-		this.dir = path.join(__dirname, '..', 'views', 'templates');
-		this.walker = require('../node/walker');
+		var dir = path.join(__dirname, '..', 'views', 'templates');
 		this.hogan_compiler = require('../node/hogan_compiler');
 
-		walker.findAll(dir, function(err, list) {
+		reader(dir, function(err, list) {
 			if (!err) {
 				hogan_compiler.makeTemplates(dir,list, function(err, done) {
 					return callback(err, done);

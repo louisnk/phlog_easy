@@ -9,7 +9,7 @@ var APP = window.APP || {};
       footerAvailable: false,
       footerTakeover: false,
       canvasHeader: Modernizr.canvas,
-      mainBg: 'url(/images/asia.jpg)'
+      mainBg: 'url(/images/enchanted3.jpg)'
     }),
 
     pageState: new Backbone.Model({
@@ -17,7 +17,7 @@ var APP = window.APP || {};
       imagesOpen: false,
       imageToShow: '000',
       imagesLoaded: false,
-      imageSetToShow: 'day'
+      imageSetToShow: false
     }),
 
     init: function() {
@@ -73,6 +73,7 @@ var APP = window.APP || {};
 
     checkEntryPoint: function() {
       if (window.location.pathname !== '/') {
+        console.log('i should not route')
         this.mainRouter.navigate(window.location.pathname, { trigger: true });
       }
 

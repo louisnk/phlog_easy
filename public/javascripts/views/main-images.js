@@ -12,6 +12,7 @@ var APP = window.APP || {};
 			this.template = APP.templates.images,
 
 			this.listen();
+			console.log(this.model.attributes);
 
 			return this;
 		},
@@ -19,7 +20,10 @@ var APP = window.APP || {};
 		listen: function() {
 			
 			this.model.on('change:imagesOpen', function(model, inUse) {
+				console.log(model);
+				console.log(inUse);
 				if (inUse) { 
+					console.log('i should not be open');
 					this.fetchPictures(this.model.get('imageSetToShow'))
 							.model.set('imagesLoaded', false);
 				}

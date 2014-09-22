@@ -36,10 +36,14 @@ var APP = window.APP || {};
 		},
 
 		setActiveView: function(activePage) {
-			
+			console.log(this.model.attributes);
 			_.each(this.model.attributes, function(open, page) {
 				if (page !== 'imageSetToShow' && page !== 'imagesLoaded' ) {
-					if (page !== activePage) { this.model.set(page, false); }
+					if (page !== activePage) {
+						if (this.model.get(page)) { 
+							this.model.set(page, false);
+						}
+					}
 					else { this.model.set(page, true); }					
 				}
 			}.bind(this));
