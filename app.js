@@ -6,11 +6,13 @@
 var express = require('express');
 var routes = require('./routes');
 var template = require('./routes/template');
+var utils = require('./utils');
 var http = require('http');
-fs = require('fs');
-dirWalker = require('./node/walker');
-path = require('path');
-hogan = require('hjs');
+var reader = require('recursive-readdir');
+var fs = require('fs');
+var path = require('path');
+var hogan = require('hjs');
+var s = (process.platform === 'win32') ? '\\' : '/';
 _ = require('lodash');
 Emitter = require('events').EventEmitter;
 emitter = new Emitter();
@@ -37,62 +39,29 @@ if ('development' == app.get('env')) {
 
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+  console.log('Express listening on port ' + app.get('port'));
 });
 
-sendJSON = function(res, data) {
-  res.statusCode = 200;
-  res.setHeader('content-type', 'application/json');
-  res.end(data);
-}
+
+
 
 
 var searchDir = path.join(__dirname, 'public', 'images');
-directoryTree = {},
-hits = 0;
 
-dirWalker.findAll(searchDir, {toJSON: true}, function(err, fileList) {
-  hits++;
-
-  function processImageArray(imageArray, pictureSet) {
-    return {
-      files: [],
-      pushFiles: function() {
-        imageArray.forEach(function(file,i) {
-          this.files.push( makeObj(file, pictureSet) );
-        }.bind(this));
-
-        return this;     
-      }
-    }.pushFiles().files;
-  }
-
-  function makeObj(file,pictureSet) {
-    return {
-      src: '../' + file.split(/(public)[\/\\]/)[2].replace(/[\\\/]/g, '/'),
-      description: 'A picture from the ' + pictureSet,
-      id: generateHash() + pictureSet,
-      set: pictureSet
+reader(searchDir, function(err, files) {
+  directoryTree = utils.makeImagesJSON(files, searchDir);
+  
+  _.each(directoryTree, function(set, i) {
+    if (set.images.length > 0) {
+      _.each(set, function(imageArray, j) {
+        if (j === 'thumbs') {
+          directoryTree[i][j] = utils.processImageArray(imageArray, i, j);
+        } else {
+          directoryTree[i][j] = utils.processImageArray(imageArray, i);
+        }
+      });        
     }
-  }
-
-  function generateHash() {
-    return parseInt(Math.random() * 10e8);
-  }
-
-  if (hits > 2) {
-    directoryTree = fileList;
-    _.each(directoryTree, function(set, i) {
-      if (set.images.length > 0) {
-        _.each(set, function(size, j) {
-          directoryTree[i][j] = processImageArray(size, i);
-          // if (i == 'night' && j === 'images') console.log(directoryTree[i][j]);
-        });        
-      }
-    });
-  } else directoryTree = fileList;
-
-
+  });
 
 });
 
@@ -106,7 +75,7 @@ serve = function(req,res) {
       id: query.id
     }
   }
-
+  console.log(directoryTree)
   console.log(req.query);
   
 
@@ -116,18 +85,18 @@ serve = function(req,res) {
   if (imageObject) {
     if (requested.thumbs &&
         Object.keys(imageObject.thumbs).length > 0) { 
-      sendJSON(res, JSON.stringify(imageObject.thumbs) );
+      utils.sendJSON(res, JSON.stringify(imageObject.thumbs) );
     } else if (requested.id && Object.keys(imageObject.images).length > 0) { 
 
-      sendJSON(res, JSON.stringify(
+      utils.sendJSON(res, JSON.stringify(
         _.where(imageObject.images, { id: requested.id }) 
       ));
-    } else sendJSON(res, 'No images found');
+    } else utils.sendJSON(res, 'No images found');
   
 
-  // sendJSON(res, JSON.stringify({'images': files}));
+  // utils.sendJSON(res, JSON.stringify({'images': files}));
   } else {
-    sendJSON(res, 'No images found for that directory');
+    utils.sendJSON(res, 'No images found for that directory');
   }
 
 }

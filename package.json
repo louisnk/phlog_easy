@@ -25,6 +25,8 @@
     "mongodb": "*",
     "less-middleware": "*",
     "lodash": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "chai": "*",
+    "recursive-readdir": "*"
   }
 }
