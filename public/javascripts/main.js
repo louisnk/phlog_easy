@@ -9,7 +9,7 @@ var APP = window.APP || {};
       footerAvailable: false,
       footerTakeover: false,
       canvasHeader: Modernizr.canvas,
-      mainBg: 'url(/images/enchanted3.jpg)'
+      mainBg: 'url(/images/lake.jpg)'
     }),
 
     pageState: new Backbone.Model({
@@ -60,7 +60,7 @@ var APP = window.APP || {};
     }, 
 
     stopLocalLinks: function() {
-      $('body a[href^="/"]').bind('click touchstart', function(e) {
+      $('body').on('click touchstart', 'a[href^="/"]', function(e) {
         e.preventDefault();
 
         this.mainRouter.navigate(
@@ -73,7 +73,6 @@ var APP = window.APP || {};
 
     checkEntryPoint: function() {
       if (window.location.pathname !== '/') {
-        console.log('i should not route')
         this.mainRouter.navigate(window.location.pathname, { trigger: true });
       }
 
