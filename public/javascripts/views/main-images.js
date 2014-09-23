@@ -4,7 +4,6 @@ var APP = window.APP || {};
 	APP.Views = APP.Views || {};
 
 	APP.Views.MainImageView = Backbone.View.extend({
-
 		
 		url: '/getImages',
 
@@ -12,7 +11,6 @@ var APP = window.APP || {};
 			this.template = APP.templates.images,
 
 			this.listen();
-			console.log(this.model.attributes);
 
 			return this;
 		},
@@ -20,10 +18,7 @@ var APP = window.APP || {};
 		listen: function() {
 			
 			this.model.on('change:imagesOpen', function(model, inUse) {
-				console.log(model);
-				console.log(inUse);
 				if (inUse) { 
-					console.log('i should not be open');
 					this.fetchPictures(this.model.get('imageSetToShow'))
 							.model.set('imagesLoaded', false);
 				}
@@ -39,20 +34,19 @@ var APP = window.APP || {};
 			this.model.on('change:imagesLoaded', function(model, loaded) {
 				if (loaded) { this.renderTemplate().showPictures(); }
 				else this.hidePictures();
-			}.bind(this));
-
-			// this.$el.on('click', 'img', function(e) {
-			// 	this.setImageToShow(e);
-			// }.bind(this));
+			}.bind(this));		
 			
 			return this;
 		},
 
 		fetchPictures: function(whichSet) {
-
+			
 			$.ajax({
 				url: this.url,
-				data: {'pictureSet': whichSet, 'thumbs': true},
+				data: {
+					'pictureSet': whichSet,
+					'thumbs': true
+				},
 				context: this,
 				success: function(data, status) {
 
