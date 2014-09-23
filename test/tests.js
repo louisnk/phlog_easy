@@ -19,7 +19,7 @@ suite('Utils', function() {
     var testObj = utils.makeObj(file, picset, subset);
     testObj.should.be.a('object');
     testObj.should.have.property('src');
-    testObj.src.should.equal('images/day/abc.png');
+    testObj.src.should.equal('/images/day/abc.png');
     testObj.should.have.property('description');
     testObj.description.should.equal('A picture from the day');
     testObj.should.have.property('id');
@@ -31,7 +31,7 @@ suite('Utils', function() {
         set = 'night',
         subset = 'thumbs',
 
-        imgObjects = utils.processImageArray(imgArray, set, subset);
+        imgObjects = utils.processImages(imgArray, set, subset);
         imgObjects.should.be.an('array');
         imgObjects[0].should.be.an('object');
         

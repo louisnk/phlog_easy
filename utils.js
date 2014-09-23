@@ -8,7 +8,7 @@ module.exports = {
     res.setHeader('content-type', 'application/json');
     res.end(data);
   },
-  processImageArray: function(imageArray, pictureSet, subset) {
+  processImages: function(imageArray, pictureSet, subset) {
     subset = subset || '.';
     return {
       files: [],
@@ -25,12 +25,13 @@ module.exports = {
     return {
       src: path.join('/', 'images', pictureSet, subset, file).replace(/[\\]/g, '/'),
       description: 'A picture from the ' + pictureSet,
-      id: this.generateHash() + pictureSet,
+      id: this.generateHash(file) + pictureSet,
       set: pictureSet
     }
   },
-  generateHash: function() {
-    return parseInt(Math.random() * 10e8);
+  generateHash: function(file) {
+    return file.split('_')[1].slice(0,-4);
+    // return parseInt(Math.random() * 10e8);
   },
 
   // takes array of paths, makes JSON
