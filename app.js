@@ -50,14 +50,14 @@ var searchDir = path.join(__dirname, 'public', 'images');
 
 reader(searchDir, function(err, files) {
   directoryTree = utils.makeImagesJSON(files, searchDir);
-  
+
   _.each(directoryTree, function(set, i) {
     if (set.images.length > 0) {
       _.each(set, function(imageArray, j) {
         if (j === 'thumbs') {
-          directoryTree[i][j] = utils.processImageArray(imageArray, i, j);
+          directoryTree[i][j] = utils.processImages(imageArray, i, j);
         } else {
-          directoryTree[i][j] = utils.processImageArray(imageArray, i);
+          directoryTree[i][j] = utils.processImages(imageArray, i);
         }
       });        
     }
@@ -75,26 +75,23 @@ serve = function(req,res) {
       id: query.id
     }
   }
-  console.log(directoryTree)
-  console.log(req.query);
-  
 
-  var requested = queryParams(req.query),
-      imageObject = directoryTree[requested.pictureSet];
-
-  if (imageObject) {
-    if (requested.thumbs &&
-        Object.keys(imageObject.thumbs).length > 0) { 
-      utils.sendJSON(res, JSON.stringify(imageObject.thumbs) );
-    } else if (requested.id && Object.keys(imageObject.images).length > 0) { 
-
+  var query = queryParams(req.query),
+      Images = directoryTree[query.pictureSet];
+  if (Images) {
+    if (query.thumbs &&
+        Images.thumbs.length > 0) { 
+      utils.sendJSON(res, JSON.stringify(Images.thumbs) );
+    } else if (query.id && Images.images.length > 0) { 
+      var imageToSend;
+      _.each(Images.images, function(img, i) {
+        if (img.id === query.id) { return imageToSend = img }
+      })
       utils.sendJSON(res, JSON.stringify(
-        _.where(imageObject.images, { id: requested.id }) 
+        imageToSend
       ));
     } else utils.sendJSON(res, 'No images found');
-  
 
-  // utils.sendJSON(res, JSON.stringify({'images': files}));
   } else {
     utils.sendJSON(res, 'No images found for that directory');
   }
