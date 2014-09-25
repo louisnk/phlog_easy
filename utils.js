@@ -30,7 +30,16 @@ module.exports = {
     }
   },
   generateHash: function(file) {
-    return file.split('_')[1].slice(0,-4);
+    if (file.match('_')) {
+      return parseInt(file.split('_')[1].slice(0,-4));
+    } else {
+      for (var i = 0; i < file.length; i++) {
+        var n = file.charAt(i);
+        if (typeof n === 'number') {
+          return this.hash = this.hash.concat(n);
+        }
+      }
+    }
     // return parseInt(Math.random() * 10e8);
   },
 
