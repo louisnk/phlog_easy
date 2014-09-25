@@ -1,43 +1,39 @@
-var assert = require('chai').assert;
-var expect = require('chai').expect;
-var should = require('chai').should();
 var routes = require('..\\routes');
-var utils = require('..\\utils')
+var utils = require('..\\utils');
 var log = console.log;
 
 
-suite('Utils', function() {
-  test('creates hash', function() {
-    assert.typeOf(utils.generateHash(), 'number');
+describe('Utils', function() {
+  it('creates hash', function() {
+    is(utils.generateHash('a/b/c/abc_123.jpg'), 123);
   });
 
-  test('makes a model for image data', function() {
-    var file = 'abc.png', 
+  it('makes a model for image data', function() {
+    var file = 'abc_123.png', 
         picset = 'day',
         subset = '.';
 
     var testObj = utils.makeObj(file, picset, subset);
-    testObj.should.be.a('object');
-    testObj.should.have.property('src');
-    testObj.src.should.equal('/images/day/abc.png');
-    testObj.should.have.property('description');
-    testObj.description.should.equal('A picture from the day');
-    testObj.should.have.property('id');
-    testObj.id.slice(-3).should.equal('day');
+    is(typeof testObj, 'object');
+    is(testObj.src, '/images/day/abc_123.png');
+    is(testObj.description, 'A picture from the day');
+    is(testObj.id, '123day');
+    is(testObj.set, 'day');
   });
 
-  test('Properly processes image arrays into Objects', function() {
+  it('Properly processes image arrays into Objects', function() {
     var imgArray = [ 'DSC_8951.JPG', 'DSC_9002.JPG' ],
         set = 'night',
         subset = 'thumbs',
 
         imgObjects = utils.processImages(imgArray, set, subset);
-        imgObjects.should.be.an('array');
-        imgObjects[0].should.be.an('object');
+
+        is(imgObjects instanceof Array, true);
+        is(typeof imgObjects[0], 'object');
         
   });
 
-  test('Makes JSON of images array', function() {
+  it('Makes JSON of images array', function() {
     var imgArray = ['C:\\web\\phlog\\public\\images\\day\\DSC_2015.JPG',
                     'C:\\web\\phlog\\public\\images\\day\\thumbs\\DSC_2015.JPG',
                     'C:\\web\\phlog\\public\\images\\night\\DSC_8951.JPG',
@@ -45,12 +41,12 @@ suite('Utils', function() {
         origin = "C:\\web\\phlog\\public\\images",
 
         imgJSON = utils.makeImagesJSON(imgArray, origin);
-        imgJSON.should.be.a('object');
-        imgJSON.should.have.property('day').should.be.an('object');
-        imgJSON.day.should.have.property('images').with.length(1);
-        imgJSON.day.images.should.be.an('array');
-        imgJSON.day.should.have.property('thumbs');
-        imgJSON.day.thumbs.should.have.length(1);
+
+        is(typeof imgJSON, 'object')
+        is(typeof  imgJSON.day, 'object');
+        is(imgJSON.day.images.length, 1);
+        is(Array.isArray(imgJSON.day.images), true);
+        is(imgJSON.day.thumbs.length, 1);
   });
 
 
