@@ -1,6 +1,6 @@
-var routes = require('..\\routes');
-var utils = require('..\\utils');
-var log = console.log;
+var routes = require('../routes');
+var utils = require('../utils');
+var s = process.platform === 'win32' ? '\\' : '/';
 
 
 describe('Utils', function() {
@@ -34,19 +34,29 @@ describe('Utils', function() {
   });
 
   it('Makes JSON of images array', function() {
-    var imgArray = ['C:\\web\\phlog\\public\\images\\day\\DSC_2015.JPG',
-                    'C:\\web\\phlog\\public\\images\\day\\thumbs\\DSC_2015.JPG',
-                    'C:\\web\\phlog\\public\\images\\night\\DSC_8951.JPG',
-                    'C:\\web\\phlog\\public\\images\\night\\thumbs\\DSC_8951.JPG' ],
-        origin = "C:\\web\\phlog\\public\\images",
+    var imgArray, origin, imgJSON;
+    if (s === '\\') {
+      imgArray = ['C:\\web\\phlog\\public\\images\\day\\DSC_2015.JPG',
+                  'C:\\web\\phlog\\public\\images\\day\\thumbs\\DSC_2015.JPG',
+                  'C:\\web\\phlog\\public\\images\\night\\DSC_8951.JPG',
+                  'C:\\web\\phlog\\public\\images\\night\\thumbs\\DSC_8951.JPG' ];
 
-        imgJSON = utils.makeImagesJSON(imgArray, origin);
+      origin = "C:\\web\\phlog\\public\\images";
+    } else {
+      imgArray = ['/home/louis/Desktop/web/phlog_easy/public/images/day/dsc_1.jpg',
+                  '/home/louis/Desktop/web/phlog_easy/public/images/day/thumbs/dsc_1.jpg',
+                  '/home/louis/Desktop/web/phlog_easy/public/images/night/dsc_1.png',
+                  '/home/louis/Desktop/web/phlog_easy/public/images/night/thumbs/dsc_1.png' ];
+      origin = "/home/louis/Desktop/web/phlog_easy/public/images";
+    }
 
-        is(typeof imgJSON, 'object')
-        is(typeof  imgJSON.day, 'object');
-        is(imgJSON.day.images.length, 1);
-        is(Array.isArray(imgJSON.day.images), true);
-        is(imgJSON.day.thumbs.length, 1);
+    imgJSON = utils.makeImagesJSON(imgArray, origin);
+
+    is(typeof imgJSON, 'object')
+    is(typeof  imgJSON.day, 'object');
+    is(imgJSON.day.images.length, 1);
+    is(Array.isArray(imgJSON.day.images), true);
+    is(imgJSON.day.thumbs.length, 1);
   });
 
 
